@@ -45,7 +45,7 @@ public class Snake : NetworkBehaviour
 
     private void Start()
     {
-        if(!isLocalPlayer)
+        if (!isLocalPlayer)
         {
             GetComponent<SnakeMovement>().enabled = false;
 
