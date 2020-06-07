@@ -6,6 +6,7 @@ using Mirror;
 using System.Collections.Specialized;
 using System;
 using System.Security.Cryptography;
+using UnityEngine.SceneManagement;
 
 public class Snake : NetworkBehaviour
 {
@@ -19,6 +20,7 @@ public class Snake : NetworkBehaviour
     public Transform bodyHolder;
 
     public Color color;
+    public Color color2;
 
     public Vector3[] startPositions;
 
@@ -27,18 +29,24 @@ public class Snake : NetworkBehaviour
     void Awake()
     {
         
-        //Vector3 position = new Vector3(Random.Range(-20f, 20f), 0f, 0f);
         bodyHolder = new GameObject("Snake").transform;
         transform.parent = bodyHolder;
 
-        color = GetComponent<SpriteRenderer>().color;
+        if (numberOfPlayers == 0)
+            GetComponent<SpriteRenderer>().color = Color.cyan;
+        if (numberOfPlayers == 1)
+            //ColorUtility.TryParseHtmlString("#FF0090", out color2);
+            GetComponent<SpriteRenderer>().color = Color.red;
+
+
 
         if (numberOfPlayers > 2)
         {
             Destroy(gameObject);
             return;
         }
-
+        
+        
         transform.position = startPositions[numberOfPlayers];
         numberOfPlayers++;
     }
@@ -54,13 +62,15 @@ public class Snake : NetworkBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        SceneManager.LoadScene("Menu");
         //Player Died
         var snakeParts = bodyHolder.GetComponentsInChildren<SnakeBodypart>();
-
+        
         foreach (var part in snakeParts)    //TODO: extract and use deligates to remove duplicate code (Hard)
             part.enabled = false;
 
         gameObject.SetActive(false);
+        
     }
 
 
