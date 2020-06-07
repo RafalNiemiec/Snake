@@ -6,14 +6,13 @@ using Mirror;
 
 public class AppleSpawner : NetworkBehaviour
 {
-    //Clean code!
-    public int maxApples = 10;
+    public int maxApples = 5;
     public GameObject apple;
-    public int x = 80;          //TODO: Move to a Game Controller (Medium)
+    public int x = 80;        
     public int y = 42;
 
 	public override void OnStartServer() {
-        InvokeRepeating("SpawnApples", 0, 5); //TODO: make spawn interval a variable (Easy)
+        InvokeRepeating("SpawnApples", 0, 5); 
     }
 	
 

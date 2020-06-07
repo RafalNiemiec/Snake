@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SnakeBodypart : MonoBehaviour {
 
-    //TODO: Make a list of snake parts and reuse them rather then making new ones all the time (Hard)
-
     float lifeTimeRemaining = 0;
 
     private void Update()

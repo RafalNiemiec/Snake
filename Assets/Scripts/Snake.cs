@@ -7,6 +7,9 @@ using System.Collections.Specialized;
 using System;
 using System.Security.Cryptography;
 using UnityEngine.SceneManagement;
+using System.Globalization;
+using UnityEngine.UI;
+using System.Diagnostics;
 
 public class Snake : NetworkBehaviour
 {
@@ -19,13 +22,13 @@ public class Snake : NetworkBehaviour
     [HideInInspector]
     public Transform bodyHolder;
 
-    public Color color;
-    public Color color2;
+    public Color playerOneColor;
+    public Color playerTwoColor;
+    public Color bodyColor;
 
     public Vector3[] startPositions;
 
 
-    // Use this for initialization
     void Awake()
     {
         
@@ -33,11 +36,10 @@ public class Snake : NetworkBehaviour
         transform.parent = bodyHolder;
 
         if (numberOfPlayers == 0)
-            GetComponent<SpriteRenderer>().color = Color.cyan;
+            GetComponent<SpriteRenderer>().color = playerOneColor;
+            
         if (numberOfPlayers == 1)
-            //ColorUtility.TryParseHtmlString("#FF0090", out color2);
-            GetComponent<SpriteRenderer>().color = Color.red;
-
+            GetComponent<SpriteRenderer>().color = playerTwoColor;
 
 
         if (numberOfPlayers > 2)
@@ -45,7 +47,6 @@ public class Snake : NetworkBehaviour
             Destroy(gameObject);
             return;
         }
-        
         
         transform.position = startPositions[numberOfPlayers];
         numberOfPlayers++;
@@ -56,21 +57,19 @@ public class Snake : NetworkBehaviour
         if (!isLocalPlayer)
         {
             GetComponent<SnakeMovement>().enabled = false;
-
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        SceneManager.LoadScene("Menu");
-        //Player Died
         var snakeParts = bodyHolder.GetComponentsInChildren<SnakeBodypart>();
         
-        foreach (var part in snakeParts)    //TODO: extract and use deligates to remove duplicate code (Hard)
+        foreach (var part in snakeParts)  
             part.enabled = false;
 
         gameObject.SetActive(false);
-        
+        numberOfPlayers = 0;
+        SceneManager.LoadScene("Menu");
     }
 
 
@@ -78,13 +77,11 @@ public class Snake : NetworkBehaviour
     {
         if (other.gameObject.tag == "Apple")
         {
-            lenght += 3; //TODO: Get value from apple? (Medium)
-
+            lenght += 3;
             var snakeParts = bodyHolder.GetComponentsInChildren<SnakeBodypart>();
-
-            foreach (var part in snakeParts)    //TODO: extract and use deligates to remove duplicate code (Hard)
-                part.AddLifeTime(3 * timeStep);         //Calculate from timeScale (Medium)
-
+            foreach (var part in snakeParts)   
+                part.AddLifeTime(3 * timeStep);     
+            
             Destroy(other.gameObject);
         }
     }

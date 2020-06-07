@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,14 +11,13 @@ public class SnakeBodypartSpawner : MonoBehaviour {
     Snake snake;
     Vector3 oldPosition;
 
-    // Use this for initialization
     void Start () {
         snake = GetComponent<Snake>();
         oldPosition = transform.position;
-        snakeBodypart.GetComponent<SpriteRenderer>().color = snake.color;
+        snakeBodypart.GetComponent<SpriteRenderer>().color = snake.bodyColor;
     }
 
-    // Spawn a new snake piece in late update (after we have moved)
+
     void LateUpdate () {
 
         float distanceMoved = Vector3.Distance(transform.position, oldPosition);
