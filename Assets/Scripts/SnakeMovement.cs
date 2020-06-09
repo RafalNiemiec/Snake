@@ -5,17 +5,15 @@ using UnityEngine;
 
 public class SnakeMovement : MonoBehaviour
 {
-    Vector3 direction = new Vector3(0, 1, 0);
+    Vector3 direction = new Vector3(0, 0, 0);
     int x = 0;
-    int y = 1;
-    // Use this for initialization
+    int y = 0;
+
     void Start()
     {
-        //Start our step by step update
         InvokeRepeating("StepUpdate", 0, Snake.timeStep);
     }
 
-    // Update is called once per frame
     private void Update()
     {
 
